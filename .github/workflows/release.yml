@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y mingw-w64 p7zip-full wget
+          sudo apt-get install -y mingw-w64 p7zip-full wget upx-ucl
 
       - name: Determine version
         id: version
@@ -33,8 +33,10 @@ jobs:
             -mno-stack-arg-probe -Xlinker --stack=0x200000,0x200000 -nostdlib -Wall -Wextra \
             -finline-limit=64 -Wl,-gc-sections installer.c -lurlmon -lkernel32 -lucrtbase \
             -luser32 -nostdlib -ladvapi32 -lntdll -lshell32 -lole32 -luuid -s \
+            -Wl,--major-subsystem-version,6,--minor-subsystem-version,0 \
             -o "ChoCinstaller_${{ steps.version.outputs.version }}.exe"
           strip -R .reloc "ChoCinstaller_${{ steps.version.outputs.version }}.exe"
+          upx --best -q "ChoCinstaller_${{ steps.version.outputs.version }}.exe"
 
       - name: Compile powershell wrappers
         run: |
