@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version (e.g. 0.5c.756)'
+        description: 'Version (e.g. 0.5c.999)'
         required: false
         default: '0.5c.999'
   push:
